@@ -1,11 +1,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_all_github/app.dart';
+import 'package:flutter_all_github/model/instance/shared_preferences.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+Future<void> main() async {
+  final pref = await SharedPreferences.getInstance();
+
   runApp(
-    const ProviderScope(
-      child: App(),
+    ProviderScope(
+      overrides: [
+        /// provide SharedPreferences in a synchronous process
+        sharedPreferenceProvider.overrideWithValue(pref),
+      ],
+      child: const App(),
     ),
   );
 }
